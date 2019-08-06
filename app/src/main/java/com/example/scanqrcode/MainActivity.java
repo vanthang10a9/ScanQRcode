@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -20,7 +20,7 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity {
     Button mButton;
     ImageView mImageView;
-    TextView mTextViewInfoQRcode;
+    EditText mEditTextInfoQRcode;
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mButton = (Button) findViewById(R.id.button);
         mImageView = (ImageView) findViewById(R.id.imageview);
-        mTextViewInfoQRcode = (TextView) findViewById(R.id.textviewInfoQRcode);
+        mEditTextInfoQRcode = (EditText) findViewById(R.id.edittextQRinfo);
 
         final IntentIntegrator intentIntegrator = new IntentIntegrator(this);
         mButton.setOnClickListener(new View.OnClickListener() {
@@ -48,13 +48,7 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
                 Picasso.with(this).load(result.getContents()).into(mImageView);
-                try {
-                    JSONObject jsonObject = new JSONObject(result.getContents());
-                    mTextViewInfoQRcode.setText(jsonObject.getString("name"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
+                mEditTextInfoQRcode.setText(result.getContents());
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
